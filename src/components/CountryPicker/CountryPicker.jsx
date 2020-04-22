@@ -13,6 +13,7 @@ const CountryPicker = ({ countries, handleCountryChange }) => {
   return (
     <div className="CountryPicker">
       <Select
+        classNamePrefix="CountryPicker"
         defaultValue={{ label: 'Global', value: '' }}
         isSearchable
         options={selectOptions}
