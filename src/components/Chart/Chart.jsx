@@ -2,12 +2,29 @@ import React from 'react';
 import { Bar, Line } from 'react-chartjs-2';
 import './Chart.scss';
 
-const Chart = ({country, countryData, data}) => {
+const Chart = ({ country, countryData, data }) => {
+  const options = {
+    scales: {
+      yAxes: [{
+        ticks: {
+          callback(value) {
+            return Number(value).toLocaleString('en')
+          }
+        }
+      }]
+    }
+  }
+
   const lineChart = (
     data.length ? (
       <Line
+        options={options}
         data={{
-          labels: data.map(({ date }) => date),
+          labels: data.map(({ date }) => {
+            const formatDate = new Date(date);
+            const options = { month: 'short', day: 'numeric' };
+            return new Intl.DateTimeFormat('en-GB', options).format(formatDate)
+          }),
           datasets: [{
             data: data.map(({ confirmed }) => confirmed),
             label: 'Infected',
@@ -26,9 +43,14 @@ const Chart = ({country, countryData, data}) => {
   );
 
   const barChart = (
-    countryData.confirmed 
+    countryData.confirmed
       ? (
-        <Bar 
+        <Bar
+          options={{
+            ...options,
+            legend: { display: false },
+            title: { display: true, text: `Current state in ${country}` }
+          }}
           data={{
             labels: [`Infected`, `Recovered`, `Deaths`],
             datasets: [{
@@ -41,17 +63,13 @@ const Chart = ({country, countryData, data}) => {
               data: [countryData.confirmed.value, countryData.recovered.value, countryData.deaths.value]
             }]
           }}
-          options={{
-            legend: { display: false },
-            title: { display: true, text: `Current state in ${country}`},
-          }}
         />
       ) : null
   )
 
   return (
     <div className="Chart">
-      { country ? barChart : lineChart }
+      {country ? barChart : lineChart}
     </div>
   );
 };
