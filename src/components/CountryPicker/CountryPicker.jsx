@@ -1,15 +1,26 @@
 import React from 'react';
+import Select from 'react-select';
 import './CountryPicker.scss';
 
-const CountryPicker = ({countries, handleCountryChange}) => (
+const CountryPicker = ({ countries, handleCountryChange }) => {
+  const selectOptions = [{label: 'Global', value: ''}, ...countries.map(country => (
+    {
+      label: country,
+      value: country,
+    }
+  ))];
+
+  return (
     <div className="CountryPicker">
-        <select className="CountryPicker__select" onChange={(e) => handleCountryChange(e.target.value)}>
-            <option value="">Global</option>
-            {
-              countries.map((country, i) => <option value={country} key={i}>{country}</option>)
-            }
-        </select>
+      <Select
+        classNamePrefix="CountryPicker"
+        defaultValue={{ label: 'Global', value: '' }}
+        isSearchable
+        options={selectOptions}
+        onChange={opt => handleCountryChange(opt.value)}
+      />
     </div>
-);
+  );
+};
 
 export default CountryPicker;
