@@ -1,6 +1,11 @@
 import React from 'react';
 import { Bar, Line } from 'react-chartjs-2';
-import './Chart.scss';
+import styled from 'styled-components';
+
+const ChartWrap = styled.div`
+  display: flex;
+  margin-bottom: 3rem;
+`;
 
 const Chart = ({ country, countryData, data }) => {
   const options = {
@@ -68,9 +73,9 @@ const Chart = ({ country, countryData, data }) => {
   )
 
   return (
-    <div className="Chart">
+    <ChartWrap>
       {country ? barChart : lineChart}
-    </div>
+    </ChartWrap>
   );
 };
 

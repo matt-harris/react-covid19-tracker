@@ -3,12 +3,22 @@ import Header from './components/Header/Header';
 import Cards from './components/Cards/Cards';
 import Chart from './components/Chart/Chart';
 import Footer from './components/Footer/Footer';
-import './App.scss';
+import GlobalStyles from './theme/globalStyles';
+import styled from 'styled-components';
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-width: 64rem;
+  margin: auto;
+  padding-right: 1.5rem;
+  padding-left: 1.5rem;
+`;
 
 const App = () => {
   const [data, setData] = useState({});
   const [dailyData, setDailyData] = useState([]);
-  const [countryData, setCountryData] = useState([]);
+  const [countryNames, setCountryNames] = useState([]);
   const [country, setCountry] = useState('');
 
   /**
@@ -24,7 +34,7 @@ const App = () => {
 
     const res = await fetch(url);
     const data = await res.json();
-    const { confirmed, recovered, deaths, lastUpdate } = await data;
+    const { confirmed, recovered, deaths, lastUpdate } = data;
 
     setData({
       confirmed,
@@ -53,12 +63,12 @@ const App = () => {
   /**
    * Fetch all country names that have reported cases and set state.
    */
-  async function fetchCountryData() {
+  async function fetchCountryNames() {
     const res = await fetch(`https://covid19.mathdro.id/api/countries`);
     const data = await res.json();
-    const { countries } = await data;
+    const { countries } = data;
 
-    setCountryData(countries.map(country => country.name));
+    setCountryNames(countries.map(country => country.name));
   }
 
   /**
@@ -71,15 +81,18 @@ const App = () => {
 
   useEffect(() => { fetchData() }, []);
   useEffect(() => { fetchDailyData() }, []);
-  useEffect(() => { fetchCountryData() }, []);
+  useEffect(() => { fetchCountryNames() }, []);
 
   return (
-    <div className="container">
-      <Header countries={countryData} handleCountryChange={handleCountryChange} />
-      <Cards data={data} />
-      <Chart data={dailyData} countryData={data} country={country} />
-      <Footer />
-    </div>
+    <>
+      <GlobalStyles />
+      <Container>
+        <Header countries={countryNames} handleCountryChange={handleCountryChange} />
+        <Cards data={data} />
+        <Chart data={dailyData} countryData={data} country={country} />
+        <Footer />
+      </Container>
+    </>
   )
 }
 
