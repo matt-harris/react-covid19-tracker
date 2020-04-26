@@ -16,6 +16,9 @@ const Container = styled.div`
 `;
 
 const App = () => {
+  /**
+   * State.
+   */
   const [data, setData] = useState({});
   const [dailyData, setDailyData] = useState([]);
   const [countryNames, setCountryNames] = useState([]);
@@ -24,6 +27,8 @@ const App = () => {
   /**
    * Fetch data from API and set state.
    * Confirmed, Recovered, Deaths and Last Update date.
+   * @param {string} country - Selected Country
+   * @returns {Array} if Country is passed returns Country data else returns Global data.
    */
   async function fetchData(country) {
     let url = `https://covid19.mathdro.id/api`;
@@ -72,16 +77,16 @@ const App = () => {
   }
 
   /**
-   * Handle Country change: fetchData and update state.
+   * Handle Country change: update state.
    */
-  async function handleCountryChange(country) {
-    fetchData(country);
+  function handleCountryChange(country) {
     setCountry(country);
   }
 
   useEffect(() => { fetchData() }, []);
   useEffect(() => { fetchDailyData() }, []);
   useEffect(() => { fetchCountryNames() }, []);
+  useEffect(() => { fetchData(country) }, [country]);
 
   return (
     <>
