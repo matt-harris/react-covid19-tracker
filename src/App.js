@@ -83,7 +83,6 @@ const App = () => {
     setCountry(country);
   }
 
-  useEffect(() => { fetchData() }, []);
   useEffect(() => { fetchDailyData() }, []);
   useEffect(() => { fetchCountryNames() }, []);
   useEffect(() => { fetchData(country) }, [country]);
