@@ -1,6 +1,21 @@
 import React from 'react';
 import Select from 'react-select';
-import './CountryPicker.scss';
+import styled from 'styled-components';
+
+const CountrySelectWrap = styled.div`
+  width: 100%;
+
+  @media (min-width: 30rem) {
+    width: 20rem;
+  }
+`;
+
+const ReactSelectStyles = {
+  control: (provided) => ({
+    ...provided,
+    borderColor: '#ddd',
+  })
+}
 
 const CountryPicker = ({ countries, handleCountryChange }) => {
   const selectOptions = [{label: 'Global', value: ''}, ...countries.map(country => (
@@ -11,15 +26,15 @@ const CountryPicker = ({ countries, handleCountryChange }) => {
   ))];
 
   return (
-    <div className="CountryPicker">
+    <CountrySelectWrap>
       <Select
-        classNamePrefix="CountryPicker"
+        styles={ReactSelectStyles}
         defaultValue={{ label: 'Global', value: '' }}
         isSearchable
         options={selectOptions}
         onChange={opt => handleCountryChange(opt.value)}
       />
-    </div>
+    </CountrySelectWrap>
   );
 };
 
