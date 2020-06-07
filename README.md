@@ -11,7 +11,7 @@ This repository contains a Covid-19 tracker app built with React.js that fetches
 ```bash
 $ git clone https://github.com/matt-harris/react-covid19-tracker.git
 
-$ cd creact-covid19-tracker
+$ cd react-covid19-tracker
 
 $ npm install
 
